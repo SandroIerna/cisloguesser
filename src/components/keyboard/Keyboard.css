@@ -1,0 +1,21 @@
+.qwerty-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.keyboard-key {
+  height: 3rem;
+  width: 3rem;
+  background-color: #dfd0b8;
+  outline: none;
+  border: none;
+  padding: 0.5em;
+  border-radius: 0.25rem;
+}
