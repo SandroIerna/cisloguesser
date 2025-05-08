@@ -73,6 +73,7 @@ const MainPage = () => {
                     if (el) inputRefs.current[flatIndex] = el;
                   }}
                   type='text'
+                  readOnly={isMobile}
                   maxLength={1}
                   className={`letter-input ${
                     incorrectIndexes.has(flatIndex) ? 'incorrect' : ''
@@ -124,6 +125,21 @@ const MainPage = () => {
     }
   };
 
+  const handleBackspace = () => {
+    const lastFilledIndex = [...inputLetters]
+      .map((val, idx) => ({ val, idx }))
+      .reverse()
+      .find((item) => item.val !== '')?.idx;
+
+    if (lastFilledIndex !== undefined) {
+      const updated = [...inputLetters];
+      updated[lastFilledIndex] = '';
+      setInputLetters(updated);
+      setUserInput(updated.join(''));
+      inputRefs.current[lastFilledIndex]?.focus();
+    }
+  };
+
   useEffect(() => {
     const handleEnterKey = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
@@ -135,6 +151,7 @@ const MainPage = () => {
     return () => {
       window.removeEventListener('keydown', handleEnterKey);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userInput, fullValue, inputLetters]);
 
   useEffect(() => {
@@ -156,7 +173,11 @@ const MainPage = () => {
       <button className='enter-button' onClick={handleGenerateNew}>
         Enter
       </button>
-      <Keyboard onLetterClick={handleSpecialLetterClick} isMobile={isMobile} />
+      <Keyboard
+        onLetterClick={handleSpecialLetterClick}
+        isMobile={isMobile}
+        handleBackspace={handleBackspace}
+      />
     </div>
   );
 };
