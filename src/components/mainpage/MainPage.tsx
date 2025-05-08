@@ -91,6 +91,7 @@ const MainPage = () => {
 
   const handleGenerateNew = () => {
     const target = fullValue.replace(/\s+/g, '');
+    console.log(userInput.toLowerCase(), target.toLowerCase());
     if (userInput.toLowerCase() === target.toLowerCase()) {
       const newNumber = generateRandomNumber();
       setRandomNumber(newNumber);
@@ -101,7 +102,7 @@ const MainPage = () => {
     } else {
       const newIncorrect = new Set<number>();
       for (let i = 0; i < target.length; i++) {
-        if (inputLetters[i] !== target[i]) {
+        if (inputLetters[i].toLowerCase() !== target[i].toLowerCase()) {
           newIncorrect.add(i);
         }
       }
