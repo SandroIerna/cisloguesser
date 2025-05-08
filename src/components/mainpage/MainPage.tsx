@@ -7,6 +7,7 @@ const MainPage = () => {
   const [randomNumber, setRandomNumber] = useState<number>(0);
   const [inputLetters, setInputLetters] = useState<string[]>([]);
   const [userInput, setUserInput] = useState<string>('');
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [incorrectIndexes, setIncorrectIndexes] = useState<Set<number>>(
     new Set()
   );
@@ -90,7 +91,7 @@ const MainPage = () => {
 
   const handleGenerateNew = () => {
     const target = fullValue.replace(/\s+/g, '');
-    if (userInput === target) {
+    if (userInput.toLowerCase() === target.toLowerCase()) {
       const newNumber = generateRandomNumber();
       setRandomNumber(newNumber);
       const clean = getCzechNumberWord(newNumber).replace(/\s+/g, '');
@@ -135,6 +136,18 @@ const MainPage = () => {
     };
   }, [userInput, fullValue, inputLetters]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 480);
+    };
+
+    // Set initial state
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className='main-body-container'>
       <div className='random-number'>{randomNumber}</div>
@@ -142,7 +155,7 @@ const MainPage = () => {
       <button className='enter-button' onClick={handleGenerateNew}>
         Enter
       </button>
-      <Keyboard onLetterClick={handleSpecialLetterClick} />
+      <Keyboard onLetterClick={handleSpecialLetterClick} isMobile={isMobile} />
     </div>
   );
 };
